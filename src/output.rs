@@ -4,7 +4,7 @@ pub fn print_detected(path: &str, format: &str) {
     println!("{}", serde_json::json!({
         "file": path,
         "detected_format": format
-    }).to_string());
+    }));
 }
 
 pub fn print_tile_set(tile_set: &TileSet) {
@@ -15,7 +15,7 @@ pub fn print_composed(content: &str) {
     println!("{}", serde_json::json!({
         "status": "composed",
         "content": content
-    }).to_string());
+    }));
 }
 
 pub fn print_stats(stats: &TileStats) {
@@ -33,7 +33,7 @@ pub fn print_pipeline_result(input: &str, format: &str, tile_count: usize) {
         "input": input,
         "format": format,
         "tiles_produced": tile_count
-    }).to_string());
+    }));
 }
 
 pub fn print_crate_list(crates: &[crate::commands::CrateInfo]) {
@@ -45,7 +45,7 @@ pub fn print_crate_list(crates: &[crate::commands::CrateInfo]) {
             "version": c.version,
             "description": c.description
         })).collect::<Vec<_>>()
-    }).to_string());
+    }));
 }
 
 pub fn print_crate_info(info: &crate::commands::CrateInfo) {

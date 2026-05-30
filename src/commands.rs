@@ -60,15 +60,14 @@ pub fn detect_format(content: &str) -> String {
     let trimmed = content.trim();
 
     // JSON detection
-    if (trimmed.starts_with('{') && trimmed.ends_with('}'))
-        || (trimmed.starts_with('[') && trimmed.ends_with(']'))
+    if ((trimmed.starts_with('{') && trimmed.ends_with('}'))
+        || (trimmed.starts_with('[') && trimmed.ends_with(']')))
+        && serde_json::from_str::<serde_json::Value>(trimmed).is_ok()
     {
-        if serde_json::from_str::<serde_json::Value>(trimmed).is_ok() {
-            if trimmed.starts_with('{') {
-                return "json-object".to_string();
-            }
-            return "json-array".to_string();
+        if trimmed.starts_with('{') {
+            return "json-object".to_string();
         }
+        return "json-array".to_string();
     }
 
     // CSV detection: check if lines have consistent comma separation
@@ -110,7 +109,7 @@ fn decompose_text(content: &str) -> Vec<Tile> {
 
 fn decompose_csv(content: &str) -> Vec<Tile> {
     let mut lines = content.lines().peekable();
-    let header_line = lines.peek().map(|l| *l).unwrap_or("");
+    let header_line = lines.peek().copied().unwrap_or("");
     let headers: Vec<&str> = header_line.split(',').map(|h| h.trim()).collect();
 
     lines
